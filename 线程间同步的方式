@@ -1,0 +1,18 @@
+一、多线程间同步方式
+  1. 阻塞式
+    1）使用windows原生WaitForSingleObject
+          使用方法：
+              1. 引入头文件windows.h
+              2. 需包含： HANDLE m_hEvent (类似信号量）
+                         QObject* m_worker (移入工作线程的对象）
+              3. QThread* workerThread = new QThread(this)  (加入this指针方便管理对象生命周期）
+                 m_worker = new QObject(m_hEvent)  (注意：工作类在创建时不能指定父类对象，否则无法移入线程）
+                 m_worker.moveToThread(workerThread)
+              4. 主线程中需要调用   ResetEvent(m_hEvent)   (类似于初始化，使该信号为初始状态）
+              5. 主线程中调用 WaitForSingleObject()  进入阻塞
+              6. 工作线程中 调用SetEvent(m_hEvent)后，主线程可继续执行
+
+
+
+2. 非阻塞式
+   1）信号槽机制
