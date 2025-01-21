@@ -1,0 +1,2 @@
+一、 C++指针对象若未初始化，其值为随机值，而非nullptr，在类构造时应该将成员变量中的指针对象赋值为nullptr，否则容易报错
+二、 QObject对象调用moveToThread时，注意QObject构造中不能有父类，否则无法移入thread
